@@ -1,0 +1,63 @@
+[
+  {
+    "verb": "git",
+    "action": "clone",
+    "args": ["http*", "*"],
+    "msg": "🔄 Clonando repositório Git...",
+    "stp": [
+      {
+        "cmd": "git",
+        "arg": "clone ${1} ${2}"
+      }
+    ]
+  },
+  {
+    "verb": "docker",
+    "action": "run",
+    "args": ["-p", "*", "*"],
+    "msg": "🐳 Rodando container Docker...",
+    "stp": [
+      {
+        "cmd": "docker",
+        "arg": "run ${1} ${2}:80 ${3}"
+      }
+    ]
+  },
+  {
+    "verb": "npm",
+    "action": "install",
+    "args": ["*"],
+    "msg": "📦 Instalando pacote npm...",
+    "stp": [
+      {
+        "cmd": "npm",
+        "arg": "install ${1}"
+      }
+    ]
+  },
+  {
+    "verb": "curl",
+    "action": "get",
+    "args": ["http*"],
+    "msg": "🌐 Fazendo request HTTP...",
+    "stp": [
+      {
+        "cmd": "curl",
+        "arg": "-L ${1}"
+      }
+    ]
+  },
+  {
+    "verb": "ssh",
+    "action": "connect",
+    "args": ["*", "*"],
+    "msg": "🔐 Conectando via SSH...",
+    "stp": [
+      {
+        "cmd": "ssh",
+        "arg": "${1}@${2}",
+        "mod": "interactive"
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "verb": "test",
+    "action": "simple",
+    "args": ["*"],
+    "msg": "Test simple command",
+    "stp": [
+      {
+        "cmd": "echo",
+        "arg": "test-${1}"
+      }
+    ]
+  },
+  {
+    "verb": "test",
+    "action": "multi",
+    "args": ["*", "*"],
+    "msg": "Test multi args",
+    "stp": [
+      {
+        "cmd": "echo",
+        "arg": "${1} ${2}"
+      }
+    ]
+  },
+  {
+    "verb": "test",
+    "action": "wildcard",
+    "args": ["http*", "*.git"],
+    "msg": "Test wildcard matching",
+    "stp": [
+      {
+        "cmd": "echo",
+        "arg": "url=${1} repo=${2}"
+      }
+    ]
+  },
+  {
+    "verb": "test",
+    "action": "literal",
+    "args": ["-p", "*"],
+    "msg": "Test literal matching",
+    "stp": [
+      {
+        "cmd": "echo",
+        "arg": "port flag with ${2}"
+      }
+    ]
+  }
+]

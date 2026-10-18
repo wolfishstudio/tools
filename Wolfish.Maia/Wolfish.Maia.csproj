@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../Version.props" />
 
@@ -57,6 +57,9 @@
     <None Update="TerminalCommands.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="BurstCommands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\TerminalCommands.Linux.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -72,3 +75,4 @@
   </ItemGroup>
 
 </Project>
+
