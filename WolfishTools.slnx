@@ -11,11 +11,11 @@
   </Folder>
   <Folder Name="/5 - Infrastructure/">
     <Project Path="Wolfish.ChatAgent/Wolfish.ChatAgent.csproj" />
-    <Project Path="Wolfish.CloudAgents/Wolfish.CloudAgents.csproj" />
-    <Project Path="Wolfish.Gemini/Wolfish.Gemini.csproj" />
-    <Project Path="Wolfish.Llama/Wolfish.Llama.csproj" Id="480741dd-5f2a-4610-b4fa-ac613b8b5bd7" />
   </Folder>
-  <Folder Name="/7 - Tests/" />
+  <Folder Name="/7 - Tests/">
+    <Project Path="Wolfish.Tests/Wolfish.Tests.csproj" />
+    <Project Path="Wolfish.IntegrationTests/Wolfish.IntegrationTests.csproj" />
+  </Folder>
   <Folder Name="/DevOps/">
     <File Path=".github/workflows/pages.yml" />
     <File Path=".github/workflows/release.yml" />

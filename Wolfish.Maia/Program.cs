@@ -1,4 +1,4 @@
-﻿using Wolfish.Commands;
+using Wolfish.Commands;
 using Wolfish.Maia.Commands;
 
 namespace Wolfish.Maia
@@ -9,41 +9,53 @@ namespace Wolfish.Maia
         {
             var found = false;
             var baseDirectory = AppContext.BaseDirectory;
-            var terminalCommand = new WolfishCommand($"{baseDirectory}Lists/TerminalCommands.json");
+            
+            // Inicializar os 3 tipos de comando
             var commandRegistry = CommandRegistry.CreateDefault();
+            var cleanShots = new WolfishCommand(Path.Combine(baseDirectory, "TerminalCommands.json"));
+            var burstShots = new BurstCommand(Path.Combine(baseDirectory, "BurstCommands.json"));
 
-            //args = ["welcome"];
-            //args = ["info"];
-            //args = ["home"];
-            //args = ["list"];
+            // Sem argumentos: exibe ajuda
+            if (args.Length == 0) 
+            { 
+                await commandRegistry.TryExecuteAsync("help", args); 
+                return; 
+            }
 
-            //args = ["install","github"];
-            //args = ["merge","developer","master"];
-            //args = ["download","chrome"];
-            //args = ["update","system"];
+            // 1. Quick Shot (1 argumento) — CommandRegistry
+            // Exemplos: maia help, maia welcome, maia list
+            if (args.Length == 1)
+            {
+                found = await commandRegistry.TryExecuteAsync(args[0], args);
+            }
 
-            //args = ["install", "sdk10"];
+            // 2. Clean Shot (2 argumentos) — TerminalCommands.json
+            // Exemplos: maia download chrome, maia install node
+            if (!found && args.Length == 2) 
+            { 
+                found = await cleanShots.SeekAndExecute(args[0], args[1]); 
+            }
 
-            //args = ["apt", "search", "octopi"];
-            //args = ["uninstall", "dotnet8"];
-            //args = ["ask", "especial", "para", "me", "dar", "dicas", "de", "comandos", "shell", "windows", "e", "linux", "mais", "utilizados", "em", "desenvolvimento", "de", "software", "em", "no", "máximo", "200", "palavras", "e", "em", "portugues"];
-
-            if (args.Length == 0) { await commandRegistry.TryExecuteAsync("help", args); return; }
-
-            //quick shots tiro rapido
-            if (args.Length == 1) { found = await commandRegistry.TryExecuteAsync(args[0], args); }
-
-            //clean shots tiro certeiro
-            if (!found && args.Length == 2) { found = await terminalCommand.SeekAndExecute(args[0], args[1]); }
-
-            //burst rajada            
-            if (!found && args.Length > 2 && args[0] == "ask") { found = await commandRegistry.TryExecuteAsync("ask", args); }
-
-            if (!found) { Console.WriteLine($"Unknown command! Try Again!"); }
-
-        }
+            // 3. Burst Shot (3+ argumentos) — BurstCommands.json primeiro, depois CommandRegistry
+            // Exemplos: maia git clone https://... pasta, maia docker run -p 8080 nginx
+            if (!found && args.Length >= 3) 
+            { 
+                // Tenta Burst JSON primeiro
+                found = await burstShots.SeekAndExecute(args);
                 
-    }
+                // Se não achou no JSON, tenta CommandRegistry (ex: maia ask fulano pergunta)
+                if (!found)
+                {
+                    found = await commandRegistry.TryExecuteAsync(args[0], args);
+                }
+            }
 
+            // 4. Nada funcionou
+            if (!found) 
+            { 
+                Console.WriteLine($"Unknown command! Try Again!"); 
+            }
+        }
+    }
 }
 
